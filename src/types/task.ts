@@ -3,4 +3,5 @@ export interface Task {
   title: string;
   category: string;
   status: string;
+  dueDate: string;
 }

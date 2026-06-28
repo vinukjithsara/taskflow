@@ -4,15 +4,17 @@ type AddTaskModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onAddTask: (
-    title: string,
-    category: string,
-    status: string
-  ) => void;
+  title: string,
+  category: string,
+  status: string,
+  dueDate: string
+) => void;
 
   editingTask?: {
     title: string;
     category: string;
     status: string;
+    dueDate: string;
   } | null;
 };
 
@@ -25,6 +27,7 @@ export default function AddTaskModal({
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Personal");
   const [status, setStatus] = useState("Backlog");
+  const [dueDate, setDueDate] = useState("");
 
   useEffect(() => {
   if (editingTask) {
@@ -42,7 +45,8 @@ export default function AddTaskModal({
     onAddTask(
   title,
   category,
-  status
+  status,
+  dueDate
 );
 
     setTitle("");
@@ -123,6 +127,19 @@ export default function AddTaskModal({
               <option>Completed</option>
             </select>
           </div>
+
+          <div>
+  <label className="block text-sm text-slate-300 mb-2">
+    Due Date
+  </label>
+
+  <input
+    type="date"
+    value={dueDate}
+    onChange={(e) => setDueDate(e.target.value)}
+    className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none text-white"
+  />
+</div>
 
           <div className="flex justify-end gap-3 pt-4">
             <button

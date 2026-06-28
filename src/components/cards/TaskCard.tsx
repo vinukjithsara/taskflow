@@ -3,6 +3,7 @@ type Props = {
   title: string;
   category: string;
   status: string;
+  dueDate: string;
   onDelete: (id: number) => void;
   onEdit: (id: number) => void;
 };
@@ -12,6 +13,7 @@ export default function TaskCard({
   title,
   category,
   status,
+  dueDate,
   onDelete,
   onEdit,
 }: Props) {
@@ -91,7 +93,7 @@ export default function TaskCard({
 
       {/* Info */}
       <div className="space-y-2 text-slate-400 text-sm">
-        <p>📅 Due Tomorrow</p>
+        <p>📅 Due: {dueDate}</p>
         <p>👤 Assigned to You</p>
       </div>
     </div>

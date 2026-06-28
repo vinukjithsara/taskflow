@@ -103,7 +103,7 @@ function App() {
     setIsModalOpen(false);
     setEditingTaskId(null);
   }}
-  onAddTask={(title, category, status) => {
+  onAddTask={(title, category, status, dueDate) => {
     if (editingTaskId !== null) {
       setTasks(
         tasks.map((task) =>
@@ -113,6 +113,7 @@ function App() {
                 title,
                 category,
                 status,
+                dueDate,
               }
             : task
         )
@@ -125,6 +126,7 @@ function App() {
         title,
         category,
         status,
+        dueDate,
       };
 
       setTasks((prev) => [...prev, newTask]);
