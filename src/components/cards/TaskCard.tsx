@@ -4,6 +4,7 @@ type Props = {
   category: string;
   status: string;
   onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 };
 
 export default function TaskCard({
@@ -12,6 +13,7 @@ export default function TaskCard({
   category,
   status,
   onDelete,
+  onEdit,
 }: Props) {
   const getStatusColor = () => {
     switch (status) {
@@ -52,6 +54,21 @@ export default function TaskCard({
             {status}
           </span>
 
+          {/* Edit Button */}
+          <button
+            onClick={() => onEdit(id)}
+            className="
+              text-slate-500
+              hover:text-blue-400
+              text-sm
+              transition
+            "
+            title="Edit Task"
+          >
+            ✏️
+          </button>
+
+          {/* Delete Button */}
           <button
             onClick={() => onDelete(id)}
             className="

@@ -5,11 +5,21 @@ import type { Task } from "../types/task";
 
 type DashboardProps = {
   tasks: Task[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  searchTerm: string;
 };
 
 export default function Dashboard({
   tasks,
+  setTasks,
+  searchTerm,
 }: DashboardProps) {
+  const filteredTasks = tasks.filter((task) =>
+  task.title
+    .toLowerCase()
+    .includes(searchTerm.toLowerCase())  
+);
+console.log("Search:", searchTerm);
   return (
     <>
       <div className="mb-8 bg-slate-800/80 border border-slate-700 rounded-3xl p-6">
@@ -70,16 +80,27 @@ export default function Dashboard({
         </h2>
 
         <div className="grid grid-cols-3 gap-6">
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              id={task.id}
-              title={task.title}
-              category={task.category}
-              status={task.status}
-              onDelete={() => {}}
-            />
-          ))}
+  {filteredTasks.length === 0 ? (
+    <div className="col-span-3 text-center py-10 text-slate-400">
+      🔍 No tasks found
+    </div>
+  ) : (
+    filteredTasks.map((task) => (
+      <TaskCard
+        key={task.id}
+        id={task.id}
+        title={task.title}
+        category={task.category}
+        status={task.status}
+        onDelete={(id) =>
+          setTasks(
+            tasks.filter((task) => task.id !== id)
+          )
+        }
+        onEdit={() => {}}
+      />
+    ))
+  )}
         </div>
       </div>
     </>

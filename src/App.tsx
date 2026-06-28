@@ -24,6 +24,8 @@ function App() {
     ? JSON.parse(savedTasks)
     : initialTasks;
 });
+
+const [searchTerm, setSearchTerm] = useState("");
 useEffect(() => {
   localStorage.setItem(
     "tasks",
@@ -42,10 +44,12 @@ useEffect(() => {
             <FiSearch className="absolute left-4 top-3 text-slate-400" />
 
             <input
-              type="text"
-              placeholder="Search tasks..."
-              className="bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3 w-96 outline-none"
-            />
+  type="text"
+  placeholder="Search tasks..."
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
+  className="bg-slate-800 border border-slate-700 rounded-xl pl-12 pr-4 py-3 w-96 outline-none"
+/>
           </div>
 
           <div className="flex items-center gap-4">
@@ -64,9 +68,15 @@ useEffect(() => {
 
         <Routes>
           <Route
-            path="/"
-            element={<Dashboard tasks={tasks} />}
-          />
+  path="/"
+  element={
+    <Dashboard
+  tasks={tasks}
+  setTasks={setTasks}
+  searchTerm={searchTerm}
+/>
+  }
+/>
 
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/calendar" element={<Calendar />} />
