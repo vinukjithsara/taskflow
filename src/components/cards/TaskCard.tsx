@@ -27,7 +27,9 @@ export default function TaskCard({
   return (
     <div
       className="
-      bg-slate-800/80 backdrop-blur-sm
+      h-full
+      bg-slate-800/80
+      backdrop-blur-sm
       border border-slate-700
       rounded-3xl
       p-6
@@ -43,11 +45,26 @@ export default function TaskCard({
           {category}
         </span>
 
-        <span
-          className={`${getStatusColor()} text-xs px-3 py-1 rounded-full`}
-        >
-          {status}
-        </span>
+        <div className="flex items-center gap-3">
+          <span
+            className={`${getStatusColor()} text-xs px-3 py-1 rounded-full`}
+          >
+            {status}
+          </span>
+
+          <button
+            onClick={() => onDelete(id)}
+            className="
+              text-slate-500
+              hover:text-red-500
+              text-sm
+              transition
+            "
+            title="Delete Task"
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
       {/* Title */}
@@ -56,18 +73,10 @@ export default function TaskCard({
       </h3>
 
       {/* Info */}
-      <div className="space-y-2 text-slate-400 text-sm mb-4">
+      <div className="space-y-2 text-slate-400 text-sm">
         <p>📅 Due Tomorrow</p>
         <p>👤 Assigned to You</p>
       </div>
-
-      {/* Delete Button */}
-      <button
-        onClick={() => onDelete(id)}
-        className="w-full bg-red-600 hover:bg-red-700 py-2 rounded-xl transition"
-      >
-        🗑 Delete Task
-      </button>
     </div>
   );
 }

@@ -70,19 +70,18 @@ export default function Dashboard({
         </h2>
 
         <div className="grid grid-cols-3 gap-6">
-  {tasks.map((task) => (
-    <TaskCard
-      key={task.id}
-      id={task.id}
-      title={task.title}
-      category={task.category}
-      status={task.status}
-      onDelete={(id) =>
-        setTasks(tasks.filter((task) => task.id !== id))
-      }
-    />
-  ))}
-</div>
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              category={task.category}
+              status={task.status}
+              onDelete={() => {}}
+            />
+          ))}
+        </div>
+      </div>
     </>
   );
 }
