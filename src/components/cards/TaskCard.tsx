@@ -1,13 +1,17 @@
 type Props = {
+  id: number;
   title: string;
   category: string;
   status: string;
+  onDelete: (id: number) => void;
 };
 
 export default function TaskCard({
+  id,
   title,
   category,
   status,
+  onDelete,
 }: Props) {
   const getStatusColor = () => {
     switch (status) {
@@ -24,14 +28,12 @@ export default function TaskCard({
     <div
       className="
       bg-slate-800/80 backdrop-blur-sm
-      border
-      border-slate-700
+      border border-slate-700
       rounded-3xl
       p-6
       hover:border-purple-500
       hover:-translate-y-1
-      transition-all
-      duration-300
+      transition-all duration-300
       shadow-lg
       "
     >
@@ -54,10 +56,18 @@ export default function TaskCard({
       </h3>
 
       {/* Info */}
-      <div className="space-y-2 text-slate-400 text-sm">
+      <div className="space-y-2 text-slate-400 text-sm mb-4">
         <p>📅 Due Tomorrow</p>
         <p>👤 Assigned to You</p>
       </div>
+
+      {/* Delete Button */}
+      <button
+        onClick={() => onDelete(id)}
+        className="w-full bg-red-600 hover:bg-red-700 py-2 rounded-xl transition"
+      >
+        🗑 Delete Task
+      </button>
     </div>
   );
 }
