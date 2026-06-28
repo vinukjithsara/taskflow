@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/layout/Sidebar";
 import { FiBell, FiSearch } from "react-icons/fi";
 import { Routes, Route } from "react-router-dom";
@@ -17,7 +17,19 @@ import type { Task } from "./types/task";
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+  const savedTasks = localStorage.getItem("tasks");
+
+  return savedTasks
+    ? JSON.parse(savedTasks)
+    : initialTasks;
+});
+useEffect(() => {
+  localStorage.setItem(
+    "tasks",
+    JSON.stringify(tasks)
+  );
+}, [tasks]);
 
   return (
     <div className="flex min-h-screen bg-slate-900 text-white">
@@ -78,6 +90,7 @@ function App() {
     setIsModalOpen(false);
   }}
 />
+
       </main>
     </div>
   );
