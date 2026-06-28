@@ -1,28 +1,31 @@
 import StatCard from "../components/cards/StatCard";
 import CategoryCard from "../components/cards/CategoryCard";
 import TaskCard from "../components/cards/TaskCard";
-import { initialTasks } from "../data/tasks";
+import type { Task } from "../types/task";
 
-export default function Dashboard() {
+type DashboardProps = {
+  tasks: Task[];
+};
+
+export default function Dashboard({
+  tasks,
+}: DashboardProps) {
   return (
     <>
-      {/* Welcome Banner */}
       <div className="mb-8 bg-slate-800/80 border border-slate-700 rounded-3xl p-6">
         <h2 className="text-2xl font-bold">
           👋 Good Morning, Asitha
         </h2>
 
         <p className="text-slate-400 mt-2">
-          You have 8 tasks in progress and 11 completed tasks today.
+          You have tasks waiting for you today.
         </p>
       </div>
 
-      {/* Page Title */}
       <h1 className="text-4xl font-bold mb-8">
         Dashboard
       </h1>
 
-      {/* Statistics Cards */}
       <div className="grid grid-cols-4 gap-6 mb-12">
         <StatCard
           title="Backlog"
@@ -44,46 +47,30 @@ export default function Dashboard() {
 
         <StatCard
           title="Total Tasks"
-          value={initialTasks.length}
+          value={tasks.length}
           color="bg-gradient-to-r from-blue-600 to-cyan-500"
         />
       </div>
 
-      {/* Category Tasks */}
       <div className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">
           Category Tasks
         </h2>
 
         <div className="grid grid-cols-3 gap-6">
-          <CategoryCard
-            title="Personal"
-            tasks={11}
-            emoji="🔥"
-          />
-
-          <CategoryCard
-            title="Business"
-            tasks={9}
-            emoji="💼"
-          />
-
-          <CategoryCard
-            title="Work"
-            tasks={8}
-            emoji="📊"
-          />
+          <CategoryCard title="Personal" tasks={11} emoji="🔥" />
+          <CategoryCard title="Business" tasks={9} emoji="💼" />
+          <CategoryCard title="Work" tasks={8} emoji="📊" />
         </div>
       </div>
 
-      {/* All My Tasks */}
       <div>
         <h2 className="text-2xl font-semibold mb-4">
           All My Tasks
         </h2>
 
         <div className="grid grid-cols-3 gap-6">
-          {initialTasks.map((task) => (
+          {tasks.map((task) => (
             <TaskCard
               key={task.id}
               title={task.title}

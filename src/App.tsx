@@ -11,8 +11,13 @@ import Settings from "./pages/Settings";
 
 import AddTaskModal from "./components/modals/AddTaskModal";
 
+import { initialTasks } from "./data/tasks";
+import type { Task } from "./types/task";
+
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
   return (
     <div className="flex min-h-screen bg-slate-900 text-white">
@@ -46,7 +51,11 @@ function App() {
         </div>
 
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route
+            path="/"
+            element={<Dashboard tasks={tasks} />}
+          />
+
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/team" element={<Team />} />
@@ -54,9 +63,21 @@ function App() {
         </Routes>
 
         <AddTaskModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
+  isOpen={isModalOpen}
+  onClose={() => setIsModalOpen(false)}
+  onAddTask={(title, category, status) => {
+    const newTask = {
+      id: Date.now(),
+      title,
+      category,
+      status,
+    };
+
+    setTasks((prev) => [...prev, newTask]);
+
+    setIsModalOpen(false);
+  }}
+/>
       </main>
     </div>
   );
