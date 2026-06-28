@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type AddTaskModalProps = {
   isOpen: boolean;
@@ -8,16 +8,31 @@ type AddTaskModalProps = {
     category: string,
     status: string
   ) => void;
+
+  editingTask?: {
+    title: string;
+    category: string;
+    status: string;
+  } | null;
 };
 
 export default function AddTaskModal({
   isOpen,
   onClose,
   onAddTask,
+  editingTask,
 }: AddTaskModalProps) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Personal");
   const [status, setStatus] = useState("Backlog");
+
+  useEffect(() => {
+  if (editingTask) {
+    setTitle(editingTask.title);
+    setCategory(editingTask.category);
+    setStatus(editingTask.status);
+  }
+}, [editingTask]);
 
   if (!isOpen) return null;
 
@@ -42,8 +57,8 @@ export default function AddTaskModal({
       <div className="bg-slate-800 max-w-lg w-full rounded-2xl p-6 border border-slate-700">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white">
-            Add New Task
-          </h2>
+  {editingTask ? "Edit Task" : "Add New Task"}
+</h2>
 
           <button
             onClick={onClose}
@@ -122,7 +137,7 @@ export default function AddTaskModal({
               type="submit"
               className="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700"
             >
-              Add Task
+              {editingTask ? "Save Changes" : "Add Task"}
             </button>
           </div>
         </form>

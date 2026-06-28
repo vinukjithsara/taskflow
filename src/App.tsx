@@ -18,20 +18,27 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [tasks, setTasks] = useState<Task[]>(() => {
-  const savedTasks = localStorage.getItem("tasks");
+    const savedTasks = localStorage.getItem("tasks");
 
-  return savedTasks
-    ? JSON.parse(savedTasks)
-    : initialTasks;
-});
+    return savedTasks
+      ? JSON.parse(savedTasks)
+      : initialTasks;
+  });
 
-const [searchTerm, setSearchTerm] = useState("");
-useEffect(() => {
-  localStorage.setItem(
-    "tasks",
-    JSON.stringify(tasks)
-  );
-}, [tasks]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
+
+  const editingTask = tasks.find(
+  (task) => task.id === editingTaskId
+);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "tasks",
+      JSON.stringify(tasks)
+    );
+  }, [tasks]);
 
   return (
     <div className="flex min-h-screen bg-slate-900 text-white">
@@ -74,6 +81,11 @@ useEffect(() => {
   tasks={tasks}
   setTasks={setTasks}
   searchTerm={searchTerm}
+  onEditTask={(id) => {
+    setEditingTaskId(id);
+    setIsModalOpen(true);
+  }}
+  
 />
   }
 />
@@ -86,16 +98,37 @@ useEffect(() => {
 
         <AddTaskModal
   isOpen={isModalOpen}
-  onClose={() => setIsModalOpen(false)}
+  editingTask={editingTask ?? null}
+  onClose={() => {
+    setIsModalOpen(false);
+    setEditingTaskId(null);
+  }}
   onAddTask={(title, category, status) => {
-    const newTask = {
-      id: Date.now(),
-      title,
-      category,
-      status,
-    };
+    if (editingTaskId !== null) {
+      setTasks(
+        tasks.map((task) =>
+          task.id === editingTaskId
+            ? {
+                ...task,
+                title,
+                category,
+                status,
+              }
+            : task
+        )
+      );
 
-    setTasks((prev) => [...prev, newTask]);
+      setEditingTaskId(null);
+    } else {
+      const newTask = {
+        id: Date.now(),
+        title,
+        category,
+        status,
+      };
+
+      setTasks((prev) => [...prev, newTask]);
+    }
 
     setIsModalOpen(false);
   }}

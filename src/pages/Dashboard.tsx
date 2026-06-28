@@ -7,19 +7,20 @@ type DashboardProps = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   searchTerm: string;
+  onEditTask: (id: number) => void;
 };
 
 export default function Dashboard({
   tasks,
   setTasks,
   searchTerm,
+  onEditTask,
 }: DashboardProps) {
   const filteredTasks = tasks.filter((task) =>
   task.title
     .toLowerCase()
     .includes(searchTerm.toLowerCase())  
 );
-console.log("Search:", searchTerm);
   return (
     <>
       <div className="mb-8 bg-slate-800/80 border border-slate-700 rounded-3xl p-6">
@@ -97,7 +98,7 @@ console.log("Search:", searchTerm);
             tasks.filter((task) => task.id !== id)
           )
         }
-        onEdit={() => {}}
+        onEdit={onEditTask}
       />
     ))
   )}
