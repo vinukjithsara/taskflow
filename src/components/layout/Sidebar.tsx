@@ -84,7 +84,7 @@ export default function Sidebar() {
                 ${
                   isActive
                     ? `
-                      bg-gradient-to-r
+                      bg-linear-to-r
                       from-purple-600
                       to-fuchsia-500
                       text-white
