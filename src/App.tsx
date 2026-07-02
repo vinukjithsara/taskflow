@@ -8,15 +8,17 @@ import Tasks from "./pages/Tasks";
 import Calendar from "./pages/Calendar";
 import Team from "./pages/Team";
 import Settings from "./pages/Settings";
+import Board from "./pages/Board";
+import { teamMembers } from "./data/teamMembers";
 
 import AddTaskModal from "./components/modals/AddTaskModal";
 
 import { initialTasks } from "./data/tasks";
-import type { Task } from "./types/task";
+import type { Task, TaskStatus } from "./types/task";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [members] = useState(teamMembers);
   const [tasks, setTasks] = useState<Task[]>(() => {
     const savedTasks = localStorage.getItem("tasks");
 
@@ -94,6 +96,16 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/team" element={<Team />} />
           <Route path="/settings" element={<Settings />} />
+          <Route
+  path="/board"
+  element={
+    <Board
+      tasks={tasks}
+      setTasks={setTasks}
+      teamMembers={members}
+    />
+  }
+/>
         </Routes>
 
         <AddTaskModal
@@ -103,31 +115,37 @@ function App() {
     setIsModalOpen(false);
     setEditingTaskId(null);
   }}
-  onAddTask={(title, category, status, dueDate) => {
+  onAddTask={(title: string, category: string, status: string, dueDate: string) => {
+    const taskStatus = status as TaskStatus;
+
     if (editingTaskId !== null) {
       setTasks(
         tasks.map((task) =>
           task.id === editingTaskId
             ? {
-                ...task,
-                title,
-                category,
-                status,
-                dueDate,
-              }
+  ...task,
+  title,
+  category,
+  status: taskStatus,
+  dueDate,
+  priority: task.priority,
+  assigneeId: task.assigneeId,
+}
             : task
         )
       );
 
       setEditingTaskId(null);
     } else {
-      const newTask = {
-        id: Date.now(),
-        title,
-        category,
-        status,
-        dueDate,
-      };
+      const newTask: Task = {
+  id: Date.now(),
+  title,
+  category,
+  status: taskStatus,
+  dueDate,
+  priority: "Medium",
+  assigneeId: 1,
+};
 
       setTasks((prev) => [...prev, newTask]);
     }
