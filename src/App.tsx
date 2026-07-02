@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Sidebar from "./components/layout/Sidebar";
 import { FiBell, FiSearch } from "react-icons/fi";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
@@ -16,6 +17,19 @@ import AddTaskModal from "./components/modals/AddTaskModal";
 import { initialTasks } from "./data/tasks";
 import type { Task, TaskStatus } from "./types/task";
 
+function PageTransition({ children }: { children: ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [members] = useState(teamMembers);
@@ -28,6 +42,7 @@ function App() {
   });
 
   const [searchTerm, setSearchTerm] = useState("");
+  const location = useLocation();
 
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
 
@@ -75,38 +90,55 @@ function App() {
           </div>
         </div>
 
-        <Routes>
-          <Route
-  path="/"
-  element={
-    <Dashboard
-  tasks={tasks}
-  setTasks={setTasks}
-  searchTerm={searchTerm}
-  onEditTask={(id) => {
-    setEditingTaskId(id);
-    setIsModalOpen(true);
-  }}
-  
-/>
-  }
-/>
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.pathname}>
+            <Route
+              path="/"
+              element={
+                <PageTransition>
+                  <Dashboard
+                    tasks={tasks}
+                    setTasks={setTasks}
+                    searchTerm={searchTerm}
+                    onEditTask={(id) => {
+                      setEditingTaskId(id);
+                      setIsModalOpen(true);
+                    }}
+                  />
+                </PageTransition>
+              }
+            />
 
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route
-  path="/board"
-  element={
-    <Board
-      tasks={tasks}
-      setTasks={setTasks}
-      teamMembers={members}
-    />
-  }
-/>
-        </Routes>
+            <Route
+              path="/tasks"
+              element={<PageTransition><Tasks /></PageTransition>}
+            />
+            <Route
+              path="/calendar"
+              element={<PageTransition><Calendar /></PageTransition>}
+            />
+            <Route
+              path="/team"
+              element={<PageTransition><Team /></PageTransition>}
+            />
+            <Route
+              path="/settings"
+              element={<PageTransition><Settings /></PageTransition>}
+            />
+            <Route
+              path="/board"
+              element={
+                <PageTransition>
+                  <Board
+                    tasks={tasks}
+                    setTasks={setTasks}
+                    teamMembers={members}
+                  />
+                </PageTransition>
+              }
+            />
+          </Routes>
+        </AnimatePresence>
 
         <AddTaskModal
   isOpen={isModalOpen}

@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 type Props = {
   title: string;
   value: number;
@@ -10,7 +12,10 @@ export default function StatCard({
   color,
 }: Props) {
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -4, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       className={`
       ${color}
       rounded-3xl
@@ -34,6 +39,6 @@ export default function StatCard({
       <p className="mt-3 text-white/80">
         Tasks
       </p>
-    </div>
+    </motion.div>
   );
 }

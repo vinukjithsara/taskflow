@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 type Props = {
   id: number;
   title: string;
@@ -29,7 +31,10 @@ export default function TaskCard({
   };
 
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -6, scale: 1.01, borderColor: "#a855f7" }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       className="
       h-full
       bg-slate-800/80
@@ -96,6 +101,6 @@ export default function TaskCard({
         <p>📅 Due: {dueDate}</p>
         <p>👤 Assigned to You</p>
       </div>
-    </div>
+    </motion.div>
   );
 }

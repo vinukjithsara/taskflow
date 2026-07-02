@@ -7,6 +7,7 @@ import {
   FiColumns,
 } from "react-icons/fi";
 
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 
 const menuItems = [
@@ -71,38 +72,51 @@ export default function Sidebar() {
               key={item.path}
               to={item.path}
               end={item.path === "/"}
-              className={({ isActive }) =>
-                `
-                flex
-                items-center
-                gap-3
-                px-4
-                py-4
-                rounded-2xl
-                transition-all
-                duration-300
-                ${
-                  isActive
-                    ? `
-                      bg-linear-to-r
-                      from-purple-600
-                      to-fuchsia-500
-                      text-white
-                      shadow-lg
-                    `
-                    : `
-                      text-slate-300
-                      hover:bg-slate-800
-                      hover:text-white
-                    `
-                }
-              `
-              }
+              className="block"
             >
-              <Icon size={20} />
-              <span className="font-medium">
-                {item.name}
-              </span>
+              {({ isActive }) => (
+                <motion.div
+                  whileHover={{ x: 4, scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className={`
+                    flex
+                    items-center
+                    gap-3
+                    px-4
+                    py-4
+                    rounded-2xl
+                    transition-all
+                    duration-300
+                    ${
+                      isActive
+                        ? `
+                          bg-linear-to-r
+                          from-purple-600
+                          to-fuchsia-500
+                          text-white
+                          shadow-lg
+                        `
+                        : `
+                          text-slate-300
+                          hover:bg-slate-800
+                          hover:text-white
+                        `
+                    }
+                  `}
+                >
+                  <motion.span
+                    whileHover={{ rotate: 4, scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                    className="shrink-0"
+                  >
+                    <Icon size={20} />
+                  </motion.span>
+                  <span className="font-medium">
+                    {item.name}
+                  </span>
+                </motion.div>
+              )}
             </NavLink>
           );
         })}

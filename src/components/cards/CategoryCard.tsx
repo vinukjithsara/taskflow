@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 type Props = {
   title: string;
   tasks: number;
@@ -17,7 +19,10 @@ export default function CategoryCard({
       : 90;
 
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -5, scale: 1.01, borderColor: "#a855f7" }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       className="
       bg-slate-800/80 backdrop-blur-sm
       border
@@ -54,6 +59,6 @@ export default function CategoryCard({
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
