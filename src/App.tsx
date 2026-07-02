@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Sidebar from "./components/layout/Sidebar";
 import { FiBell, FiSearch } from "react-icons/fi";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
@@ -43,6 +43,7 @@ function App() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
 
@@ -56,6 +57,20 @@ function App() {
       JSON.stringify(tasks)
     );
   }, [tasks]);
+
+  const openAddTaskModal = (taskId?: number | null) => {
+    if (taskId !== undefined && taskId !== null) {
+      setEditingTaskId(taskId);
+    } else {
+      setEditingTaskId(null);
+    }
+
+    if (location.pathname !== "/tasks") {
+      navigate("/tasks");
+    }
+
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="flex min-h-screen bg-slate-900 text-white">
@@ -78,7 +93,7 @@ function App() {
 
           <div className="flex items-center gap-4">
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => openAddTaskModal()}
               className="bg-purple-600 hover:bg-purple-700 px-5 py-3 rounded-xl font-medium"
             >
               + Add Task
@@ -96,22 +111,24 @@ function App() {
               path="/"
               element={
                 <PageTransition>
-                  <Dashboard
-                    tasks={tasks}
-                    setTasks={setTasks}
-                    searchTerm={searchTerm}
-                    onEditTask={(id) => {
-                      setEditingTaskId(id);
-                      setIsModalOpen(true);
-                    }}
-                  />
+                  <Dashboard tasks={tasks} />
                 </PageTransition>
               }
             />
 
             <Route
               path="/tasks"
-              element={<PageTransition><Tasks /></PageTransition>}
+              element={
+                <PageTransition>
+                  <Tasks
+                    tasks={tasks}
+                    setTasks={setTasks}
+                    searchTerm={searchTerm}
+                    onEditTask={(id) => openAddTaskModal(id)}
+                    onOpenAddTask={() => openAddTaskModal()}
+                  />
+                </PageTransition>
+              }
             />
             <Route
               path="/calendar"
