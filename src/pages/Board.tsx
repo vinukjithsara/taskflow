@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   DndContext,
   DragOverlay,
@@ -89,6 +90,14 @@ export default function Board({
           : task
       )
     );
+
+    const messageMap: Record<TaskStatus, string> = {
+      Backlog: "Moved to Backlog",
+      "In Progress": "Moved to In Progress",
+      Completed: "Moved to Completed",
+    };
+
+    toast.success(messageMap[nextStatus]);
   };
 
   return (

@@ -45,7 +45,7 @@ export default function Tasks({
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
         {filteredTasks.length === 0 ? (
-          <div className="col-span-full rounded-[24px] border border-slate-700/80 bg-slate-800/70 p-10 text-center text-slate-400">
+          <div className="col-span-full rounded-3xl border border-slate-700/80 bg-slate-800/70 p-10 text-center text-slate-400">
             🔍 No tasks found
           </div>
         ) : (

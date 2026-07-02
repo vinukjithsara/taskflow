@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import toast, { Toaster } from "react-hot-toast";
 import Sidebar from "./components/layout/Sidebar";
 import { FiBell, FiSearch } from "react-icons/fi";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
@@ -74,6 +75,26 @@ function App() {
 
   return (
     <div className="flex min-h-screen bg-slate-900 text-white">
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: "#111827",
+            color: "#fff",
+            border: "1px solid rgba(168, 85, 247, 0.4)",
+            borderRadius: "16px",
+            boxShadow: "0 16px 40px rgba(2, 6, 23, 0.35)",
+            padding: "12px 14px",
+          },
+          success: {
+            iconTheme: {
+              primary: "#a855f7",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
       <Sidebar />
 
       <main className="flex-1 p-10">
@@ -184,6 +205,7 @@ function App() {
         )
       );
 
+      toast.success("Task updated");
       setEditingTaskId(null);
     } else {
       const newTask: Task = {
@@ -197,6 +219,7 @@ function App() {
 };
 
       setTasks((prev) => [...prev, newTask]);
+      toast.success("Task created");
     }
 
     setIsModalOpen(false);
